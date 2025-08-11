@@ -103,15 +103,27 @@ products.forEach(function(product){
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name = "${product.name}"> 
             Add to Cart
           </button>
         </div>`;
 
     });
 
-console.log(generatedHTML);
-let gfs = document.querySelector('.js-product-grid');
-gfs.innerHTML = generatedHTML;
+let addingToThePageContainer = document.querySelector('.js-product-grid');
+addingToThePageContainer.innerHTML = generatedHTML;
+
+//And we introduced the data Attribute syntax: data-name = ${whatever};
+let addToCart = document.querySelectorAll('.js-add-to-cart');
+addToCart.forEach(function(button){
+    button.addEventListener('click', function(){
+        const productName = button.dataset.productName;
+        cart.push({
+            productName:productName,
+            quantity:1
+        });
+        console.log(cart);
+    });
+});
 
 //the next thing now is to put it on the webpage (using the DOM)
