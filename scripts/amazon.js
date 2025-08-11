@@ -6,13 +6,15 @@ The Main Idea of JavaScript to
 */
 
 //This is a data structure (using ARRAYS and OBJECTS)
+/*
+//We used the file from products.js 
 const products =[
     {
         image:'images/products/athletic-cotton-socks-6-pairs.jpg',
         name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
         rating:{
             stars: 4.5,
-            count: 87
+            counts: 87
         },
         priceInCents:1090 //Js has problem with floats so let's always save in cents or pesewas
     },
@@ -21,7 +23,7 @@ const products =[
         name: 'Intermediate Size Basketball',
         rating:{
             stars:4,
-            count:127
+            counts:127
         },
         priceInCents:2095
     },
@@ -33,8 +35,24 @@ const products =[
             counts:56
         },
         priceInCents:799
+    },
+    {
+        image:'images/products/6-piece-non-stick-baking-set.webp',
+        name:'6-Piece Non-stick, Carbon Steel Oven Bakeware Baking Set',
+        rating:{
+            stars:4.5,
+            counts:175
+        },
+        priceInCents:3499
     }
 ];
+*/
+
+/*
+It is better to always generate the HTML in Javascript
+to make it easier to add more products instead of all-the-time
+manually generating it in the HTML file
+*/
 
 let generatedHTML = ``; //this is to combine all the html together
 
@@ -55,7 +73,7 @@ products.forEach(function(product){
             <img class="product-rating-stars"
               src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
-              ${product.rating.count}
+              ${product.rating.counts}
             </div>
           </div>
 
