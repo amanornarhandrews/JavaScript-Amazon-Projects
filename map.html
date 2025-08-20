@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: rgb(61, 61, 61);
+            color: white;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <h1>MAP</h1>
+    
+    <script>
+        const maps = new Map;
+
+        maps.set("blor", "Bros");
+        maps.set("brr", "Bro");
+        console.log(maps.get("blor"));
+        console.log(maps.get("Bro")); //undefined
+        console.log(maps.has("brr"));
+        console.log(maps.size);
+
+        // maps.forEach((value, key) =>{
+        //     console.log(`${key} -> ${value}`);
+        // });
+        
+        // maps.set("fog", {animal: "cat", place: "Accra", Lang: "Anglais"});
+        
+        // maps.forEach((mapEach, keyDex)=>{
+        //     console.log(mapEach.keyDex);
+        // });
+
+        // maps.clear();
+        // console.log(maps.size);
+        </script>
+</body>
+</html>

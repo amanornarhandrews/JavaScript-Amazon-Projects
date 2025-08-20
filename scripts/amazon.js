@@ -1,64 +1,11 @@
-/*
-The Main Idea of JavaScript to
-1. Save the data
-2. Generate the HTML
-3. Make it interactive
-*/
+import { cart, cartQuantity } from "../data/cart.js";
+import { products } from "../data/products.js";
 
-//This is a data structure (using ARRAYS and OBJECTS)
-/*
-//We used the file from products.js 
-const products =[
-    {
-        image:'images/products/athletic-cotton-socks-6-pairs.jpg',
-        name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
-        rating:{
-            stars: 4.5,
-            counts: 87
-        },
-        priceInCents:1090 //Js has problem with floats so let's always save in cents or pesewas
-    },
-    {
-        image:'images/products/intermediate-composite-basketball.jpg',
-        name: 'Intermediate Size Basketball',
-        rating:{
-            stars:4,
-            counts:127
-        },
-        priceInCents:2095
-    },
-    {
-        image:'images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg',
-        name:'Adults Plain Cotton T-Shirt - 2 Pack',
-        rating:{
-            stars:4.5,
-            counts:56
-        },
-        priceInCents:799
-    },
-    {
-        image:'images/products/6-piece-non-stick-baking-set.webp',
-        name:'6-Piece Non-stick, Carbon Steel Oven Bakeware Baking Set',
-        rating:{
-            stars:4.5,
-            counts:175
-        },
-        priceInCents:3499
-    }
-];
-*/
+let generatedHTML = ``; 
 
-/*
-It is better to always generate the HTML in Javascript
-to make it easier to add more products instead of all-the-time
-manually generating it in the HTML file
-*/
-
-let generatedHTML = ``; //this is to combine all the html together
-
+//sourcing the products from the products.js
 products.forEach(function(product){
-    generatedHTML += `
-    
+    generatedHTML += `    
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -77,12 +24,12 @@ products.forEach(function(product){
             </div>
           </div>
 
-          <div class="product-price">
+          <div class="product-price js-product-price" data-product-price = "${(product.priceInCents/100).toFixed(2)}">
             ${(product.priceInCents/100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-select-quantity">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -103,27 +50,55 @@ products.forEach(function(product){
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name = "${product.name}"> 
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-products-Id = "${product.id}"> 
             Add to Cart
           </button>
         </div>`;
-
     });
 
-let addingToThePageContainer = document.querySelector('.js-product-grid');
-addingToThePageContainer.innerHTML = generatedHTML;
+document.querySelector('.js-product-grid')
+.innerHTML = generatedHTML;
 
-//And we introduced the data Attribute syntax: data-name = ${whatever};
-let addToCart = document.querySelectorAll('.js-add-to-cart');
-addToCart.forEach(function(button){
-    button.addEventListener('click', function(){
-        const productName = button.dataset.productName;
-        cart.push({
-            productName:productName,
-            quantity:1
-        });
-        console.log(cart);
-    });
+function navBarCartQuantity(){
+  let totalCartQuantity = 0;
+  cart.forEach(totalCarts =>{
+    totalCartQuantity += totalCarts.timesCart;
+  });
+  document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
+}
+
+let notifMap = new Map;
+function addedNotifFunction(closeItems, addedNotif){
+  addedNotif.classList.add("js-added-to-cart");
+
+  if(notifMap.has(closeItems)){
+  clearTimeout(notifMap.get(closeItems));
+  }
+
+  let notifTimeoutId = setTimeout(()=>{
+    addedNotif.classList.remove("js-added-to-cart");
+    notifMap.clear()
+  }, 2000);
+
+  notifMap.set(closeItems, notifTimeoutId);
+}
+
+document.querySelectorAll('.js-add-to-cart').
+forEach(button=>{
+  button.addEventListener('click', function(){
+    let productsId = button.dataset.productsId;
+    
+    let closeItems = button.closest(".product-container");
+    let quantity = Number(closeItems.querySelector(".js-select-quantity").value) || 1;     
+    let price = Number(closeItems.querySelector(".js-product-price").dataset.productPrice);
+    let addedNotif = closeItems.querySelector(".added-to-cart");
+
+    cartQuantity(productsId, quantity, price);
+
+    navBarCartQuantity();
+
+    addedNotifFunction(closeItems, addedNotif)
+
+    console.log(cart);
+  });
 });
-
-//the next thing now is to put it on the webpage (using the DOM)
