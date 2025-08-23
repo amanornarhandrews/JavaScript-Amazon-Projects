@@ -1,16 +1,4 @@
-export const cart =[
-    {
-        productsId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-        quantity: 2
-    },
-    {
-        productsId: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
-        quantity: 4
-    },
-    {
-        productsId: "e4f64a65-1377-42bc-89a5-e572d19252e2",
-        quantity: 12
-    }
+export let cart = JSON.parse(localStorage.getItem("cart")) || [
 ];
 
 export function cartQuantity(productsId, quantity, price){
@@ -20,16 +8,37 @@ export function cartQuantity(productsId, quantity, price){
 
       if(sameItem){
           sameItem.quantity += quantity;
-          sameItem.timesCart ++;
-          sameItem.productPricePerQuantity += productPricePerQuantity;
+          sameItem.productPricePerQuantity = sameItem.quantity * price;
       }else{
           cart.push(
           {
             productsId,
             quantity,
             timesCart: 1,
+            shippingDelivery:0,
             productPricePerQuantity
           }
         );
-      } 
+    } 
+    saveToStorage();
+}
+console.log(cart);
+
+export function deleting(productsId){
+    let atIndex = cart.findIndex(item=>item.productsId === productsId);
+    if(atIndex !== -1){
+        cart.splice(atIndex, 1);
+    }
+    saveToStorage();
+}
+
+export let totalCartQuantity = 0;
+export function navBarCartQuantity(){
+  cart.forEach(totalCarts =>{
+    totalCartQuantity += totalCarts.timesCart;
+  });
+}
+
+export function saveToStorage(){
+    localStorage.setItem("cart", JSON.stringify(cart));
 }

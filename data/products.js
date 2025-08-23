@@ -658,3 +658,7 @@ export const products = [
     ]
   }
 ];
+export function priceCentConversion(products){
+      let convert = products.priceInCents/100;
+      return convert.toFixed(2);
+}

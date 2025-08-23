@@ -1,5 +1,16 @@
-import { cart, cartQuantity } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { cartQuantity, navBarCartQuantity, totalCartQuantity } from "../data/cart.js";
+import { products, priceCentConversion } from "../data/products.js";
+
+
+function headerCartCount(){
+  navBarCartQuantity();  
+  if(totalCartQuantity>0){
+    document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity; 
+  }else{
+    document.querySelector('.js-cart-quantity').innerHTML = ``;  
+  }
+}
+headerCartCount();
 
 let generatedHTML = ``; 
 
@@ -59,13 +70,7 @@ products.forEach(function(product){
 document.querySelector('.js-product-grid')
 .innerHTML = generatedHTML;
 
-function navBarCartQuantity(){
-  let totalCartQuantity = 0;
-  cart.forEach(totalCarts =>{
-    totalCartQuantity += totalCarts.timesCart;
-  });
-  document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
-}
+
 
 let notifMap = new Map;
 function addedNotifFunction(closeItems, addedNotif){
@@ -92,13 +97,12 @@ forEach(button=>{
     let quantity = Number(closeItems.querySelector(".js-select-quantity").value) || 1;     
     let price = Number(closeItems.querySelector(".js-product-price").dataset.productPrice);
     let addedNotif = closeItems.querySelector(".added-to-cart");
+    let shippingDelivery = 2;
 
     cartQuantity(productsId, quantity, price);
-
+    
     navBarCartQuantity();
 
     addedNotifFunction(closeItems, addedNotif)
-
-    console.log(cart);
   });
 });
