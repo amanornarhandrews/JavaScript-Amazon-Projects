@@ -1,16 +1,7 @@
-import { cartQuantity, navBarCartQuantity, totalCartQuantity } from "../data/cart.js";
+import { cartQuantity, navBarCartQuantity, saveToStorage } from "../data/cart.js";
 import { products, priceCentConversion } from "../data/products.js";
 
 
-function headerCartCount(){
-  navBarCartQuantity();  
-  if(totalCartQuantity>0){
-    document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity; 
-  }else{
-    document.querySelector('.js-cart-quantity').innerHTML = ``;  
-  }
-}
-headerCartCount();
 
 let generatedHTML = ``; 
 
@@ -71,9 +62,18 @@ document.querySelector('.js-product-grid')
 .innerHTML = generatedHTML;
 
 
+function headerCartCount(){
+  let totalquan = navBarCartQuantity();  
+  if(totalquan>0){
+    document.querySelector('.js-cart-quantity').innerHTML = totalquan; 
+  }else{
+    document.querySelector('.js-cart-quantity').innerHTML = ``;  
+  }
+}
 
 let notifMap = new Map;
 function addedNotifFunction(closeItems, addedNotif){
+  
   addedNotif.classList.add("js-added-to-cart");
 
   if(notifMap.has(closeItems)){
@@ -88,20 +88,22 @@ function addedNotifFunction(closeItems, addedNotif){
   notifMap.set(closeItems, notifTimeoutId);
 }
 
+headerCartCount();
+
 document.querySelectorAll('.js-add-to-cart').
 forEach(button=>{
   button.addEventListener('click', function(){
     let productsId = button.dataset.productsId;
+
     
     let closeItems = button.closest(".product-container");
     let quantity = Number(closeItems.querySelector(".js-select-quantity").value) || 1;     
     let price = Number(closeItems.querySelector(".js-product-price").dataset.productPrice);
     let addedNotif = closeItems.querySelector(".added-to-cart");
-    let shippingDelivery = 2;
 
     cartQuantity(productsId, quantity, price);
     
-    navBarCartQuantity();
+    headerCartCount();
 
     addedNotifFunction(closeItems, addedNotif)
   });

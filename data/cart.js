@@ -15,6 +15,7 @@ export function cartQuantity(productsId, quantity, price){
             productsId,
             quantity,
             timesCart: 1,
+            deliveryoptionID: "1",
             shippingDelivery:0,
             productPricePerQuantity
           }
@@ -32,11 +33,12 @@ export function deleting(productsId){
     saveToStorage();
 }
 
-export let totalCartQuantity = 0;
 export function navBarCartQuantity(){
+  let totalCartQuantity = 0;
   cart.forEach(totalCarts =>{
     totalCartQuantity += totalCarts.timesCart;
   });
+  return totalCartQuantity;
 }
 
 export function saveToStorage(){
